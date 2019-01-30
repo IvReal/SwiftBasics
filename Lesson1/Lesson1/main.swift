@@ -58,7 +58,7 @@ func PrintRightTriangleParams(leg1: Float, leg2: Float)
     }
 }
 
-// Task: Пользователь вводит сумму вклада в банк и годовой процент, найти сумму вклвда через 5 лет
+// Task: Пользователь вводит сумму вклада в банк и годовой процент, найти сумму вклада через 5 лет
 // Функция расчета суммы вклада
 func HowMyMoneyGrows(deposit: Float, percent: Float, period: Int) -> Float
 {
