@@ -56,9 +56,6 @@ for _ in 0..<100
 {
     AddNewFibonacciNumber(array: &FibonacciArray)
 }
-// 218922995834555169026
-// 218922995834555203584
-//let FibonacciArrayFormat = FibonacciArray.map({ String(format: "%.0f", $0) })
 print ("\nApproximate values of first \(FibonacciArray.count) Fibonacci numbers are: \(FibonacciArray)\nFor exact values we need Int128 type or dancing with tambourine...")
 
 /* Task:
