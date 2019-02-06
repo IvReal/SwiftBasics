@@ -110,8 +110,8 @@ enum Action
     case unloadCargo
 }
 
-// Lets's test my car
-var myCar = Car(brand: "BMV", manufactureYear: 2015, trunkFullVolume: 200, trunkFilledVolume: 0, isEngineOn: false, isWindowOpen: false)
+// Let's test my car
+var myCar = Car(brand: "BMW", manufactureYear: 2015, trunkFullVolume: 200, trunkFilledVolume: 0, isEngineOn: false, isWindowOpen: false)
 print("My car before start: \(myCar)")
 myCar.DoCargoOperation(action: .loadCargo, volume: 50)
 myCar.DoAction(action: .doEngineOn)
