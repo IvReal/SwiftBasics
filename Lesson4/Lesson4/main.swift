@@ -60,6 +60,7 @@ class Car {
 class TruckCar : Car {
     let capacity: Int  // weight capacity in kg
     var currentCargo: Int = 0
+    static var TotalTransportedCargo: Int = 0
     init(brand: String, year: Int, capacity: Int) {
         self.capacity = capacity
         super.init(brand: brand, year: year)
@@ -70,6 +71,9 @@ class TruckCar : Car {
             case .cargoLoad, .cargoUnload:
                 if let weight = actionParam {
                     currentCargo += weight * (action == .cargoLoad ? 1 : -1)
+                    if action == .cargoLoad {
+                        TruckCar.TotalTransportedCargo += weight
+                    }
                     result = true
                 }
             default:
