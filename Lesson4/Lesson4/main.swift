@@ -19,13 +19,13 @@ import Foundation
 */
 
 enum Action {
-    case engineOn
+    case engineOn           // common actions
     case engineOff
     case doorOpen
     case doorClose
-    case cargoLoad
+    case cargoLoad          // truck-specific actions
     case cargoUnload
-    case switchTurboMode
+    case switchTurboMode    // sportcar-specific action
 }
 
 class Car {
@@ -66,7 +66,7 @@ class TruckCar : Car {
         super.init(brand: brand, year: year)
     }
     override func DoAction(action: Action, actionParam: Int?) -> Bool {
-        var result = false
+        var result = true
         switch action {
             case .cargoLoad, .cargoUnload:
                 if let weight = actionParam {
@@ -74,7 +74,6 @@ class TruckCar : Car {
                     if action == .cargoLoad {
                         TruckCar.TotalTransportedCargo += weight
                     }
-                    result = true
                 }
             default:
                 result = super.DoAction(action: action, actionParam: nil)
@@ -95,14 +94,12 @@ class SportCar : Car {
         super.init(brand: brand, year: year)
     }
     override func DoAction(action: Action) -> Bool {
-        var result = false
+        var result = true
         switch action {
             case .switchTurboMode:
                 turboMode = !turboMode
-                result = true
             default:
                 result = super.DoAction(action: action)
-            
             }
         return result
     }
@@ -110,7 +107,7 @@ class SportCar : Car {
         return super.GetState() + ", turbo mode " + (turboMode ? "ON" : "OFF")
     }}
 
-func ApplyActionToObject(car: Car, action: Action, actionParam: Int? = nil)
+func PerformObjectAction(car: Car, action: Action, actionParam: Int? = nil)
 {
     let result = car.DoAction(action: action, actionParam: actionParam)
     if (result) {
@@ -125,9 +122,11 @@ var truck1 = TruckCar(brand: "Volvo", year: 2014, capacity: 15000)
 var truck2 = TruckCar(brand: "Kamaz", year: 2012, capacity: 4500)
 var sport1 = SportCar(brand: "Ferrari", year: 2016, accTime: 4.9)
 var sport2 = SportCar(brand: "Lamborghini", year: 2015, accTime: 4.3)
-ApplyActionToObject(car: truck1, action: .cargoLoad, actionParam: 4700) // self action
-ApplyActionToObject(car: truck1, action: .engineOn) // super class action
-ApplyActionToObject(car: truck2, action: .doorOpen) // super class action
-ApplyActionToObject(car: sport1, action: .switchTurboMode) // self action
-ApplyActionToObject(car: sport1, action: .engineOn) // super class action
-ApplyActionToObject(car: sport2, action: .cargoLoad, actionParam: 4700) // wrong action
+PerformObjectAction(car: truck1, action: .cargoLoad, actionParam: 4700) // self action
+PerformObjectAction(car: truck1, action: .engineOn) // super class action
+PerformObjectAction(car: truck2, action: .doorOpen) // super class action
+PerformObjectAction(car: truck2, action: .cargoLoad, actionParam: 300) // self action
+print("Total transported cargo: \(TruckCar.TotalTransportedCargo)")  // static (class) property test
+PerformObjectAction(car: sport1, action: .switchTurboMode) // self action
+PerformObjectAction(car: sport1, action: .engineOn) // super class action
+PerformObjectAction(car: sport2, action: .cargoLoad, actionParam: 4700) // wrong action
