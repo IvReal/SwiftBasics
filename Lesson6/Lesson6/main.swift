@@ -16,7 +16,7 @@ import Foundation
 */
 
 struct Queue<T> where T : Comparable {
-    var items = [T]()
+    private var items = [T]()
     var count: Int {
         return items.count
     }
@@ -51,7 +51,7 @@ struct Queue<T> where T : Comparable {
 
 // Test classes, conform to Comparable protocol
 class Area : Comparable, CustomStringConvertible {
-    private var area: Double {
+    var area: Double {
         return GetArea()
     }
     func GetArea() -> Double {
