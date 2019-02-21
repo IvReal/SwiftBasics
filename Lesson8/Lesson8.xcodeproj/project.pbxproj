@@ -107,7 +107,7 @@
 		AA5558E3221F45B900C1A86C /* Lesson8 */ = {
 			isa = PBXGroup;
 			children = (
-				AA555918221F48D200C1A86C /* Models */,
+				AA55591B221F49BE00C1A86C /* Snake */,
 				AA5558E4221F45B900C1A86C /* AppDelegate.swift */,
 				AA5558EA221F45BA00C1A86C /* GameScene.swift */,
 				AA5558EC221F45BA00C1A86C /* GameViewController.swift */,
@@ -135,14 +135,6 @@
 				AA55590C221F45BB00C1A86C /* Info.plist */,
 			);
 			path = Lesson8UITests;
-			sourceTree = "<group>";
-		};
-		AA555918221F48D200C1A86C /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				AA55591B221F49BE00C1A86C /* Snake */,
-			);
-			name = Models;
 			sourceTree = "<group>";
 		};
 		AA55591B221F49BE00C1A86C /* Snake */ = {
