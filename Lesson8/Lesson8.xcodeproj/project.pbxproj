@@ -141,7 +141,6 @@
 			isa = PBXGroup;
 			children = (
 				AA55591B221F49BE00C1A86C /* Snake */,
-				AA555919221F491000C1A86C /* Apple.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -149,6 +148,7 @@
 		AA55591B221F49BE00C1A86C /* Snake */ = {
 			isa = PBXGroup;
 			children = (
+				AA555919221F491000C1A86C /* Apple.swift */,
 				AA55591C221F49E800C1A86C /* SnakeBodyPart.swift */,
 				AA55591E221F4A2200C1A86C /* SnakeHead.swift */,
 				AA555920221F4A4B00C1A86C /* Snake.swift */,
