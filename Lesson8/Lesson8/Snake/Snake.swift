@@ -3,7 +3,7 @@ import SpriteKit
 // сама змейка
 class Snake: SKShapeNode {
     // скорость перемещения
-    let moveSpeed = 125.0
+    var moveSpeed = 100.0
     // угол, необходимый для расчета направления
     var angle: CGFloat = 0.0
     // массив, где хранятся сегменты тела
@@ -11,12 +11,25 @@ class Snake: SKShapeNode {
     // конструктор
     convenience init(atPoint point: CGPoint) {
         self.init()
+        initHead(point)
+    }
+    // init head (in constructor and in reset method)
+    private func initHead(_ point: CGPoint) {
         // змейка начинается с головы, создадим ее
         let head = SnakeHead(atPoint: point)
         // и добавим в массив
         body.append(head)
         // и сделаем ее дочерним объектом.
         addChild(head)
+        angle = 0.0
+    }
+    // set snake to initial state
+    func reset(atPoint point: CGPoint) {
+        removeAllChildren()
+        body.removeAll()
+        initHead(point)
+        // increase speed
+        moveSpeed = moveSpeed >= 250 ? 100 : moveSpeed + 5
     }
     // метод добавляет еще один сегмент тела
     func addBodyPart(){
@@ -56,7 +69,7 @@ class Snake: SKShapeNode {
     // перемещаем сегмент змеи
     func moveBodyPart(_ p: SnakeBodyPart, c: SnakeBodyPart){
         // перемещаем текущий элемент к предыдущему
-        let moveAction = SKAction.move(to: CGPoint(x: p.position.x, y: p.position.y), duration: 0.1 )
+        let moveAction = SKAction.move(to: CGPoint(x: p.position.x, y: p.position.y), duration: 0.1)
         // запуск действия перемещения
         c.run(moveAction)
     }

@@ -1,17 +1,12 @@
-//
-//  GameScene.swift
-//  Lesson8
-//
-//  Created by Iv on 21/02/2019.
-//  Copyright © 2019 Iv. All rights reserved.
-//
-
 import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
     // наша змея
     var snake: Snake?
+    // level and level node
+    var level = 1
+    var levelIndicator: SKLabelNode?
     // вызывается при первом запуске сцены
     override func didMove(to view: SKView) {
         // цвет фона сцены
@@ -28,32 +23,56 @@ class GameScene: SKScene {
         // создаем ноду(объект)
         let counterClockwiseButton = SKShapeNode()
         // задаем форму круга
-        counterClockwiseButton.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 45, height: 45)).cgPath
+        //counterClockwiseButton.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 45, height: 45)).cgPath
+        var figure = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 45, height: 45))
+        figure.move(to: CGPoint(x: 40, y: 22))
+        figure.addLine(to: CGPoint(x: 5, y: 22))
+        figure.move(to: CGPoint(x: 5, y: 22))
+        figure.addLine(to: CGPoint(x: 15, y: 12))
+        figure.move(to: CGPoint(x: 5, y: 22))
+        figure.addLine(to: CGPoint(x: 15, y: 32))
+        counterClockwiseButton.path = figure.cgPath
         // указываем координаты размещения
         counterClockwiseButton.position = CGPoint(x: view.scene!.frame.minX+30, y: view.scene!.frame.minY+30)
         // цвет заливки
-        counterClockwiseButton.fillColor = UIColor.gray
+        counterClockwiseButton.fillColor = UIColor.darkGray
         // цвет рамки
         counterClockwiseButton.strokeColor = UIColor.gray
         // толщина рамки
-        counterClockwiseButton.lineWidth = 10
+        counterClockwiseButton.lineWidth = 3
         // имя объекта для взаимодействия
         counterClockwiseButton.name = "counterClockwiseButton"
         // Добавляем на сцену
         self.addChild(counterClockwiseButton)
         // Поворот по часовой стрелке
         let clockwiseButton = SKShapeNode()
-        clockwiseButton.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 45, height: 45)).cgPath
+        //clockwiseButton.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 45, height: 45)).cgPath
+        figure = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 45, height: 45))
+        figure.move(to: CGPoint(x: 40, y: 22))
+        figure.addLine(to: CGPoint(x: 5, y: 22))
+        figure.move(to: CGPoint(x: 40, y: 22))
+        figure.addLine(to: CGPoint(x: 30, y: 12))
+        figure.move(to: CGPoint(x: 40, y: 22))
+        figure.addLine(to: CGPoint(x: 30, y: 32))
+        clockwiseButton.path = figure.cgPath
         clockwiseButton.position = CGPoint(x: view.scene!.frame.maxX-80, y: view.scene!.frame.minY+30)
-        clockwiseButton.fillColor = UIColor.gray
+        clockwiseButton.fillColor = UIColor.darkGray
         clockwiseButton.strokeColor = UIColor.gray
-        clockwiseButton.lineWidth = 10
+        clockwiseButton.lineWidth = 3
         clockwiseButton.name = "clockwiseButton"
         self.addChild(clockwiseButton)
-        createApple()        
+        createApple()
         // создаем змею по центру экрана и добавляем ее на сцену
         snake = Snake(atPoint: CGPoint(x: view.scene!.frame.midX, y: view.scene!.frame.midY))
         self.addChild(snake!)
+        // levels indicator
+        levelIndicator = SKLabelNode()
+        levelIndicator!.text = GetLevelAndSpeed()
+        levelIndicator!.position = CGPoint(x: view.scene!.frame.midX, y: view.scene!.frame.maxY - 25)
+        levelIndicator!.fontSize = 20
+        levelIndicator!.fontName = levelIndicator!.fontName! + "-Bold"
+        levelIndicator!.fontColor = UIColor.orange
+        self.addChild(levelIndicator!)
         // Делаем нашу сцену делегатом соприкосновений
         self.physicsWorld.contactDelegate = self
         // устанавливаем категорию взаимодействия с другими объектами
@@ -93,7 +112,7 @@ class GameScene: SKScene {
                     return
             }
             // но делаем цвет снова серым
-            touchedNode.fillColor = UIColor.gray
+            touchedNode.fillColor = UIColor.darkGray
         }
     }
     // вызывается при обрыве нажатия на экран, например, если телефон примет звонок и свернет приложение
@@ -113,6 +132,10 @@ class GameScene: SKScene {
         // Добавляем яблоко на сцену
         self.addChild(apple)
     }
+    // level and speed string content
+    func GetLevelAndSpeed() -> String {
+        return "Level \(level) Speed \(Int(snake!.moveSpeed))"
+    }
 }
 
 // Имплементируем протокол
@@ -125,19 +148,22 @@ extension GameScene: SKPhysicsContactDelegate {
         let collisionObject = bodyes ^ CollisionCategories.SnakeHead
         // проверяем, что это за второй объект
         switch collisionObject {
-        case CollisionCategories.Apple: // проверяем, что это яблоко
-            // яблоко – это один из двух объектов, которые соприкоснулись. Используем тернарный оператор, чтобы вычислить, какой именно
-            let apple = contact.bodyA.node is Apple ? contact.bodyA.node : contact.bodyB.node
-            // добавляем к змее еще одну секцию
-            snake?.addBodyPart()
-            // удаляем съеденное яблоко со сцены
-            apple?.removeFromParent()
-            // создаем новое яблоко
-            createApple()
-        case CollisionCategories.EdgeBody: // проверяем, что это стенка экрана
-        break                         // соприкосновение со стеной будет домашним заданием
-        default:
-            break
+            case CollisionCategories.Apple: // проверяем, что это яблоко
+                // яблоко – это один из двух объектов, которые соприкоснулись. Используем тернарный оператор, чтобы вычислить, какой именно
+                let apple = contact.bodyA.node is Apple ? contact.bodyA.node : contact.bodyB.node
+                // добавляем к змее еще одну секцию
+                snake?.addBodyPart()
+                // удаляем съеденное яблоко со сцены
+                apple?.removeFromParent()
+                // создаем новое яблоко
+                createApple()
+            case CollisionCategories.EdgeBody: // проверяем, что это стенка экрана
+                // соприкосновение со стеной будет домашним заданием
+                snake?.reset(atPoint: CGPoint(x: view!.scene!.frame.midX, y: view!.scene!.frame.midY))
+                level += 1
+                levelIndicator!.text = GetLevelAndSpeed()
+            default:
+                break
         }
     }
 }
@@ -151,5 +177,5 @@ struct CollisionCategories{
     // Яблоко
     static let Apple: UInt32 = 0x1 << 2
     // Край сцены (экрана)
-    static let EdgeBody:   UInt32 = 0x1 << 3
+    static let EdgeBody: UInt32 = 0x1 << 3
 }
