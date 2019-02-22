@@ -107,7 +107,7 @@
 		AA5558E3221F45B900C1A86C /* Lesson8 */ = {
 			isa = PBXGroup;
 			children = (
-				AA55591B221F49BE00C1A86C /* Snake */,
+				AA55591B221F49BE00C1A86C /* Models */,
 				AA5558E4221F45B900C1A86C /* AppDelegate.swift */,
 				AA5558EA221F45BA00C1A86C /* GameScene.swift */,
 				AA5558EC221F45BA00C1A86C /* GameViewController.swift */,
@@ -137,7 +137,7 @@
 			path = Lesson8UITests;
 			sourceTree = "<group>";
 		};
-		AA55591B221F49BE00C1A86C /* Snake */ = {
+		AA55591B221F49BE00C1A86C /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				AA555919221F491000C1A86C /* Apple.swift */,
@@ -145,7 +145,7 @@
 				AA55591E221F4A2200C1A86C /* SnakeHead.swift */,
 				AA555920221F4A4B00C1A86C /* Snake.swift */,
 			);
-			path = Snake;
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
